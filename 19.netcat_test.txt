@@ -1,0 +1,51 @@
+同1台机器测试多个netcat版本
+chargen:每个线程处理1个accept的 tcp,并且有1个单独的线程队所有请的传输进行计算速度
+
+
+
+测试1:
+t1:
+nc localhost 1234 > /dev/null
+
+t2:
+./chargen -l 1234
+Accepting... Ctrl-C to exit
+accepted no. 1 client
+393.353 MiB/s
+3052.276 MiB/s
+3121.185 MiB/s
+3119.328 MiB/s
+
+t3:
+PID USER      PR  NI    VIRT    RES    SHR S   %CPU %MEM     TIME+ COMMAND                                                        
+69519 root      20   0   15716   2212   2060 R  99.7  0.0   0:05.68 nc localhost 1234  (nc命令不行了)                                            
+69517 root      20   0   98112   2000   1848 S  59.8  0.0   0:03.41 ./chargen -l 1234  
+===========================================================================================
+测试2:
+t1:阻塞版netcat
+python netcat.py localhost 1234 > /dev/null
+
+t2:
+./chargen -l 1234
+Accepting... Ctrl-C to exit
+accepted no. 1 client
+1580.030 MiB/s
+1397.037 MiB/s
+1523.004 MiB/s
+1556.363 MiB/s
+
+t3:
+PID USER      PR  NI    VIRT    RES    SHR S   %CPU %MEM     TIME+ COMMAND                                                        
+69680 root      20   0   39592   9036   5640 R  99.3  0.1   0:23.02 python     (python不行了)                                                    
+69517 root      20   0   98112   2152   1976 S  29.2  0.0   2:56.31 chargen   
+===========================================================================================
+测试3:
+效果同测试2
+t1:非阻塞版netcat
+python netcat-nonblock.py localhost 1234 > /dev/null
+===========================================================================================
+
+===========================================================================================
+
+===========================================================================================
+

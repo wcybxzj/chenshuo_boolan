@@ -1,0 +1,45 @@
+pc1:192.168.204.132
+pc2:192.168.204.133
+
+p1:测试下网速
+ping 192.168.204.133
+64 bytes from 192.168.204.133: icmp_seq=1 ttl=64 time=0.900 ms
+64 bytes from 192.168.204.133: icmp_seq=2 ttl=64 time=0.354 ms
+
+客户端:
+./nodelay 192.168.204.133 1000（1000是说body部分有1000字节）
+connecting to 192.168.204.133:3210
+connected
+Request no. 0, sending 1000 bytes
+1597052708.307122 sent header
+1597052708.308385 sent 1000 bytes
+Sent all 1 requests, receiving responses.
+1597052708.309306 received 4 bytes, ack = 1000
+total 0.002281 (2ms!!!!)seconds
+
+客户端:
+./nodelay -b 192.168.204.133 1000 (使用buffer合并header和body)
+connecting to 192.168.204.133:3210
+connected
+Request no. 0, sending 1000 bytes
+1597053083.930114 sent 1004 bytes
+Sent all 1 requests, receiving responses.
+1597053083.931028 received 4 bytes, ack = 1000
+total 0.000997(0.9ms!!!和ping的网速一致！！！最推荐！！) seconds
+
+客户端:
+./nodelay -D 192.168.204.133 1000 (使用tcp_nodelay)
+connecting to 192.168.204.133:3210
+connected, set TCP_NODELAY
+Request no. 0, sending 1000 bytes
+1597053093.225495 sent header
+1597053093.226826 sent 1000 bytes
+Sent all 1 requests, receiving responses.
+1597053093.227283 received 4 bytes, ack = 1000
+total 0.002351 (2ms!!)seconds
+
+服务端:
+./nodelay_server
+
+监控:
+tcpdump -i ens33 -n tcp port 3210

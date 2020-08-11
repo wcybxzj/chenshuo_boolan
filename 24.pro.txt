@@ -1,0 +1,12 @@
+代码 muduo/example/prpcmon
+
+./procmon 82218  12345
+从/proc/pid/82218
+
+
+模拟复杂
+c 正选曲线
+80 负载为80%
+2 两个线程
+./dummyload c 80 2
+pid 82218

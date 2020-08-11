@@ -1,0 +1,20 @@
+21课
+io复用中 
+
+如果使用阻塞io 可能 read或者write一阻塞直接一直阻塞下去
+
+分析:
+这里阻塞的原始是chargen没有读取的地方，造成netcat.py write写满内核写缓冲最后netcat.py阻塞，然后不去读取chargen发送过来的数据
+然后chargen write写满内核写缓冲chargen阻塞
+
+t1:
+strace python netcat.py localhost 1234 < /dev/zero  > /dev/null
+阻塞不动
+
+t2:
+./chargen -l 1234
+Accepting... Ctrl-C to exit
+accepted no. 1 client
+4.243 MiB/s
+0.752 MiB/s
+阻塞不动

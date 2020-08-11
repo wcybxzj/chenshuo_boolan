@@ -1,0 +1,7 @@
+ubuntu 18先配置清华的源
+
+apt install boost-dev
+apt install libboost-all-dev
+
+https://github.com/chenshuo/recipes
+https://github.com/chenshuo/muduo

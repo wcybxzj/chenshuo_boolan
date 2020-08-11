@@ -1,0 +1,27 @@
+第7课阻塞环境下的ttcp
+
+演示阻塞io再socket中使用的问题
+
+
+同1台机:
+
+//终端1:阻塞不动
+//发送20MB
+./echo_client localhost 20000000
+
+//终端2:阻塞不动
+while true; do ./echo -r; done
+
+
+root@ybx-virtual-machine:~/www/chenshuo/chenshuo_boolan# netstat -ntp|grep '3007\|^[AP]'
+Active Internet connections (w/o servers)
+Proto Recv-Q              Send-Q                 Local Address  Foreign Address         State       PID/Program name    
+tcp   5748113(大约6MB没读) 2555904(3MB没发出去)    127.0.0.1:3007          127.0.0.1:35000         ESTABLISHED 21783/./echo        
+tcp   65536              3839433   (4MB没发出去)  127.0.0.1:35000         127.0.0.1:3007          ESTABLISHED 21789/./echo_client 
+
+
+sysctl -A|grep tcp.*mem
+                            最小值  默认值   最大值
+sysctl: net.ipv4.tcp_mem =  93492	124659	186984
+net.ipv4.tcp_rmem =         4096	131072	6291456
+net.ipv4.tcp_wmem =         4096	16384	4194304

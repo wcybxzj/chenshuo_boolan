@@ -1,0 +1,24 @@
+测试1:从/dev/zero读取1G发送出去测速
+
+机器1:
+dd if=/dev/zero bs=1MB count=1000 | nc 192.168.204.133 5001
+1000+0 records in
+1000+0 records out 
+1000000000 bytes (1.0 GB, 954 MiB) copied, 3.42211 s, 292 MB/s
+
+机器2:
+nc -l 5001 > /dev/null
+
+====================================================================================
+测试2:只是多了1个pv 测试实时网速
+机器1:
+root@ybx-virtual-machine:~/soft# dd if=/dev/zero bs=1MB count=1000 | nc 192.168.204.133 5001
+1000+0 records in
+1000+0 records out
+1000000000 bytes (1.0 GB, 954 MiB) copied, 3.19068 s, 313 MB/s
+
+机器2:
+root@ybx-virtual-machine:~# nc -l 5001 | pv -W > /dev/null
+^C 953MiB 0:00:52 [300MiB/s] [           <=>   
+====================================================================================
+

@@ -1,0 +1,11 @@
+正常了
+t1:
+strace python netcat-nonblock.py localhost 1234 < /dev/zero  > /dev/null
+
+t2:
+./chargen -l 1234
+Accepting... Ctrl-C to exit
+accepted no. 1 client
+1662.423 MiB/s
+1654.005 MiB/s
+1588.678 MiB/s
